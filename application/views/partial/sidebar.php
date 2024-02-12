@@ -20,90 +20,129 @@
         <nav class="menu">
 
             <ul class="sidebar-menu metismenu" id="sidebar-menu">
-
-                <?php foreach ($allowed_modules->result() as $module) : ?>
-
-                    <?php if ($user_info->role_id == CUSTOMER_ROLE_ID && stristr($module->module_id, "leads")) continue; ?>
-
-                    <?php if ($user_info->role_id == CUSTOMER_ROLE_ID && strpos(strtolower($module->module_id), 'home') !== false) : ?>
-                        <?php $active = (stristr("leads", $this->router->fetch_class()) && stristr("dashboard", $this->router->fetch_method()) ? 'active' : ''); ?>
-
-                        <li class="<?= $active; ?>">
-                            <a href="<?php echo site_url('leads/dashboard'); ?>">
-                                <?= $module->icons ?>
-                                <span class="nav-label">Dashboard</span>
+                <li class="">
+                    <a href="<?php echo site_url("home"); ?>" >
+                        <span class="pl-3">Dashboard</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                    
+                </li>
+                <hr>
+                <li style="color: rgba(255, 255, 255, 0.5); padding-left: 20px;   text-transform: uppercase;   font-weight: 700;"> Loan Management  </li>
+                <hr>
+                <li class="">
+                    <a href="#" title="Module Description Here">
+                        <span class="pl-3">Borrowers</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                    <ul class="sidebar-nav">
+                        <li>
+                        <a href="<?php echo site_url("customers/view/-1"); ?>">
+                                Add New Borrower
                             </a>
                         </li>
-
-                        <?php $active = (stristr("leads", $this->router->fetch_class()) && stristr("loan_history", $this->router->fetch_method()) ? 'active' : ''); ?>
-                        <li class="<?= $active; ?>">
-                            <a href="<?php echo site_url("leads/loan_history"); ?>">
-                                <i class="fa fa-money"></i> <span class="nav-label">My Loan</span>
+                        <li>
+                        <a href="<?php echo site_url("customers/index"); ?>">
+                                Borrowers List
                             </a>
                         </li>
-
-                        <?php continue; ?>
-                    <?php endif; ?>
-
-                    <?php if ($user_info->role_id == CUSTOMER_ROLE_ID && strpos(strtolower($module->module_id), 'customer') !== false) : ?>
-
-                        <?php $active = (stristr($module->module_id, $this->router->fetch_class()) ? 'active' : ''); ?>
-
-                        <li class="<?= $active; ?>">
-                            <a href="<?php echo site_url("$module->module_id/view/" . $user_info->person_id); ?>">
-                                <?= $module->icons ?>
-                                <span class="nav-label">Profile</span>
+                    </ul>
+                </li>
+                <li class="#">
+                    <a href="#">
+                        <i class="fa arrow"></i><span class="pl-3">Loans</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                    <ul class="sidebar-nav">
+                        <li class="">
+                        <a href="<?php echo site_url("loans/view/-1"); ?>">
+                                Add New Loan
                             </a>
                         </li>
-
-                        <?php continue; ?>
-
-                    <?php endif; ?>
-
-                    <?php
-                    // Decode the JSON string. If it's not a valid array, initialize it as an empty array
-                    $sub_menus = json_decode($module->sub_menus, true);
-                    if (!is_array($sub_menus)) {
-                        $sub_menus = [];
-                    }
-
-                    // Check if there are any sub menus
-                    if (count($sub_menus) > 0) :
-                        $parent_active = (stristr($module->module_id, $this->router->fetch_class()) ? 'active open' : '');
-                    ?>
-                        <li class="nav-parent <?= $parent_active; ?>">
-                            <a href="<?php echo site_url("$module->module_id"); ?>" title="<?php echo $this->lang->line('module_' . $module->module_id . '_desc'); ?>">
-                                <?= $module->icons ?>
-                                <span class="nav-label"><?php echo $this->lang->line("module_" . $module->module_id) != '' ? $this->lang->line("module_" . $module->module_id) : $module->label; ?></span>
-                                <i class="fa arrow"></i>
-                            </a>
-                            <ul class="sidebar-nav">
-                                <?php foreach ($sub_menus as $sub_menu_key => $sub_menu_url) : ?>
-                                    <?php
-                                    $child_active = (stristr($sub_menu_url, $this->router->fetch_method()) && stristr($module->module_id, $this->router->fetch_class()) ? 'active' : '');
-                                    ?>
-                                    <li class="<?= $child_active; ?>">
-                                        <a href="<?php echo site_url("$module->module_id/$sub_menu_url"); ?>">
-                                            <?= ktranslate2(str_ireplace("item", rtrim($this->lang->line("module_" . $module->module_id), "s"), $sub_menu_key)); ?>
-                                        </a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        </li>
-                    <?php else : ?>
-                        <?php
-                        $active = (stristr($module->module_id, $this->router->fetch_class()) ? 'active' : '');
-                        ?>
-                        <li class="<?= $active; ?>">
-                            <a href="<?php echo site_url("$module->module_id"); ?>">
-                                <?= $module->icons ?>
-                                <span class="nav-label"><?= $this->lang->line("module_" . $module->module_id) != '' ? $this->lang->line("module_" . $module->module_id) : $module->label; ?></span>
+                        <li>
+                        <a href="<?php echo site_url("loans/index"); ?>">
+                                Loans List
                             </a>
                         </li>
-                    <?php endif; ?>
+                    </ul>
+                </li>
+                <hr>
+                <li style="color: rgba(255, 255, 255, 0.5); padding-left: 20px;   text-transform: uppercase;   font-weight: 700;"> Accounting  </li>
+                <hr>
+                <li class="">
+                    <a href="<?php echo site_url("overdues"); ?>" title="Module Description Here">
+                        <span class="nav-label">Receivables</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                    
+                </li>
 
 
-                <?php endforeach; ?>
+                <li class="#">
+                    <a href="#" title="Module Description Here">
+                        <span class="nav-label">Payments</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                    <ul class="sidebar-nav">
+                        <li class="">
+                        <a href="<?php echo site_url("payments/view/-1"); ?>">
+                                Add New Payment
+                            </a>
+                        </li>
+                        <li>
+                        <a href="<?php echo site_url("payments/index"); ?>">
+                                Payment List
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <hr>
+                <li style="color: rgba(255, 255, 255, 0.5); padding-left: 20px;   text-transform: uppercase;   font-weight: 700;"> User & System Settings  </li>
+                <hr>
+                <li class="#">
+                    <a href="#" title="Module Description Here">
+                        <span class="nav-label">User & Roles</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                    <ul class="sidebar-nav">
+                        <li class="">
+                        <a href="<?php echo site_url("employees/view/-1"); ?>">
+                                New User
+                            </a>
+                        </li>
+                        <li>
+                        <a href="<?php echo site_url("employees/index"); ?>">
+                                User List
+                            </a>
+                        </li>
+                        <li class="">
+                        <a href="<?php echo site_url("roles/view/-1"); ?>">
+                                New Role
+                            </a>
+                        </li>
+                        <li class="">
+                        <a href="<?php echo site_url("roles/index"); ?>">
+                                Roles List
+                            </a>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="<?php echo site_url("config"); ?>" title="Module Description Here">
+                        <span class="nav-label">System</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                </li>
+                <li class="">
+                    <a href="<?php echo site_url("plugins"); ?>" title="Module Description Here">
+                        <span class="nav-label">Plugins</span>
+                        <i class="fa arrow"></i>
+                    </a>
+                </li>
+
+
+                
             </ul>
         </nav>
     </div>
@@ -112,8 +151,6 @@
 <div class="nano left-sidebar">
     <div class="nano-content">
         <ul class="nav nav-pills nav-stacked nav-inq">
-
-
 
         </ul>
     </div>

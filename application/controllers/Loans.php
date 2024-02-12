@@ -11,12 +11,6 @@ class Loans extends Secure_area implements iData_controller
         
         $this->load->library('DataTableLib');
         $this->load->model('Document_model');
-
-        // Load the Check model
-        $this->load->model('Check_model');
-        // Load form helper and form validation library
-        $this->load->helper('form');
-        $this->load->library('form_validation');
     }
 
     function index()
@@ -251,8 +245,6 @@ class Loans extends Secure_area implements iData_controller
         }
     }
 
-    
-
     function search()
     {
         
@@ -349,7 +341,6 @@ class Loans extends Secure_area implements iData_controller
         $data["c_payment_scheds"] = $c_payment_scheds;
         // payment scheds - end
         
-        $data["period_cnt"] = count(json_decode($data["loan_info"]->periodic_loan_table, true));
         
         $loan_status = (isset($data['loan_info']->loan_status) && trim($data['loan_info']->loan_status) !== "") ? $this->lang->line("common_" . strtolower($data['loan_info']->loan_status)) : $this->lang->line("common_pending");
         if ($data['loan_info']->loan_balance <= 0 && $loan_id > -1)
@@ -1431,55 +1422,6 @@ class Loans extends Secure_area implements iData_controller
         return $data;
     }
 
-    
-
-    public function save_check() {
-        // Load form helper and library if not autoloaded
-        $this->load->helper('form');
-        $this->load->library('form_validation');
-    
-        // Define form validation rules
-        $this->form_validation->set_rules('check_number', 'Check Number', 'required|trim');
-        $this->form_validation->set_rules('check_date', 'Check Date', 'required');
-        $this->form_validation->set_rules('amount', 'Amount', 'required');
-        $this->form_validation->set_rules('bank_name', 'Bank Name', 'required|trim');
-        $this->form_validation->set_rules('status', 'Status', 'required|trim');
-        // Assuming CheckType is a dropdown with two options
-        $this->form_validation->set_rules('check_type', 'Check Type', 'required|in_list[New Check,Replacement Check]');
-    
-        // Run the form validation
-        if ($this->form_validation->run() === FALSE) {
-            // If validation fails, send back to the form with errors
-            $errors = validation_errors();
-            echo json_encode(['success' => false, 'message' => $errors]);
-        } else {
-            // Form is valid, prepare data to insert
-            $check_data = array(
-                'CheckNumber' => $this->input->post('check_number'),
-                'LoanID' => $this->input->post('loan_id'), // Ensure this field is included in your form
-                'CheckDate' => $this->input->post('check_date'),
-                'Amount' => $this->input->post('amount'),
-                'BankName' => $this->input->post('bank_name'), // Changed from 'Payee' to 'BankName'
-                'Status' => $this->input->post('status'),
-                'Penalty' => $this->input->post('penalty', TRUE), // TRUE for XSS cleaning
-                'CheckType' => $this->input->post('check_type'), // The new field you added
-            );
-    
-            // Load Check_model if not autoloaded
-            $this->load->model('Check_model');
-    
-            // Insert check data using Check_model
-            if ($this->Check_model->insert_check($check_data)) {
-                // If the insert is successful, send a success response
-                echo json_encode(['success' => true, 'message' => 'Check added successfully.']);
-            } else {
-                // If the insert fails, send an error response
-                echo json_encode(['success' => false, 'message' => 'Failed to add check.']);
-            }
-        }
-    }
-    
-
     private function _get_period($period_type, $is_yearly = true)
     {
         if ($is_yearly)
@@ -2417,7 +2359,6 @@ class Loans extends Secure_area implements iData_controller
         $return["status"] = "OK";
         send($return);
     }
-    
 }
 
 ?>

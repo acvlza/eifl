@@ -66,7 +66,7 @@
  */
 switch (ENVIRONMENT)
 {
-	case 'development':
+	case 'production':
 		error_reporting(-1);
 		ini_set('display_errors', 1);
 	break;

@@ -80,12 +80,7 @@
 
 <div class="extra-filters" style="display: none;">
     &nbsp;<button class="btn btn-primary" id="btn-export-pdf"><span class="fa fa-print"></span> <?= ktranslate("common_print");?></button>
-    <select class="form-control hidden-xs" id="sel-staff">
-        <option value="0"><?=ktranslate("employees_select");?></option>
-        <?php foreach ($staffs as $staff): ?>
-            <option value="<?= $staff->person_id; ?>" <?= ((isset($_GET['employee_id'])) && $_GET['employee_id'] === $staff->person_id) ? 'selected="selected"' : ""; ?>><?= $staff->first_name . " " . $staff->last_name; ?></option>
-        <?php endforeach; ?>
-    </select>&nbsp;
+    
 </div>
 
 <!-- Modal -->

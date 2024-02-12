@@ -1,5 +1,4 @@
 <?php
-
 class Secure_area extends CI_Controller
 {
     public $allowed_modules;

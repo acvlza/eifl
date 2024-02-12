@@ -57,7 +57,8 @@ class Document_model extends CI_Model {
         }
     }
     
-    function save($id = '', $data)
+    function save($data, $id = '')
+
     {
         if ( $id != '' )
         {
@@ -75,3 +76,4 @@ class Document_model extends CI_Model {
 }
 
 ?>
+
